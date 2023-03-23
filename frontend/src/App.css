@@ -1,0 +1,44 @@
+.App {
+  text-align: center;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  color: #FFFFFF;
+  background: #1d1d2b;
+  align-items: center;
+  z-index:100;
+}
+
+content {
+  background: #FFFFFF;
+  align-items: center;
+}
+
+#content-holder {
+  max-width: 550px;
+  min-width: 550px;
+  margin: 0px auto;
+}
+
+.filter-block {
+  background: #eeeeee;
+  max-width: 550px;
+  min-width: 550px;
+  padding: 10px 20px;
+  text-align: left;
+}
+
+.filter-block input {
+  margin-right: 20px;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.city-image {
+  max-width: 300px;
+  max-height: 70px;
+}
