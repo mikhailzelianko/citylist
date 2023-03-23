@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+  cityapp:
+    build: /
+    container_name: "cityapp-container"
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=postgres
+
+  postgres:
+    image: "postgres:13-alpine"
+    container_name: "cityapp-postgres-container"
+    ports:
+      - 5432:5432
+    volumes:
+      - "vol_postgres:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+
+  front-end:
+    build: frontend/
+    container_name: "cityapp-frontend-container"
+    depends_on:
+      - cityapp
+    ports:
+      - 3000:3000
+
+volumes:
+  vol_postgres:
