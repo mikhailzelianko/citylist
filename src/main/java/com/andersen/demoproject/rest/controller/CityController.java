@@ -2,7 +2,6 @@ package com.andersen.demoproject.rest.controller;
 
 import com.andersen.demoproject.rest.response.CityResponse;
 import com.andersen.demoproject.rest.response.CityPageResponse;
-import com.andersen.demoproject.rest.request.FindCitiesRequest;
 import com.andersen.demoproject.rest.request.UpdateCityRequest;
 import com.andersen.demoproject.service.CityService;
 import com.andersen.demoproject.service.CityServiceImpl;
@@ -13,11 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/city")
+@RequestMapping("/api/v1/city")
 @Slf4j
 public class CityController {
 
@@ -29,14 +27,13 @@ public class CityController {
 
     @Operation(summary = "Find cities",
             description = "Return paged cities list filtered by name")
-    @PostMapping(value = "/search",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CityPageResponse> findCities(@RequestBody @Valid FindCitiesRequest request) {
-        log.info("Find cities request: {}", request.toString());
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("id"));
-        CityPageResponse result = cityService.searchCitiesByNamePage(request.getName(), pageable);
-        return ResponseEntity.ok(result);
+    @GetMapping (value = "/")
+    public CityPageResponse findCities(@RequestParam int page,
+                                       @RequestParam int size,
+                                       @RequestParam(required = false) String name) {
+        log.info("Find cities request: page={}, size={}, name={}", page, size, name);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
+        return cityService.searchCitiesByNamePage(name != null ? name : "", pageable);
     }
 
     @Operation(summary = "Update city by ID",
@@ -44,8 +41,8 @@ public class CityController {
     @PutMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CityResponse> updateCityById(@PathVariable("id") int id, @RequestBody @Valid UpdateCityRequest updateCityRequest) {
+    public CityResponse updateCityById(@PathVariable("id") int id, @RequestBody @Valid UpdateCityRequest updateCityRequest) {
         log.info("Update city. id={} request: {}", id, updateCityRequest.toString());
-        return ResponseEntity.ok(cityService.updateById(id, updateCityRequest));
+        return cityService.updateById(id, updateCityRequest);
     }
 }

@@ -60,17 +60,8 @@ function App() {
     ];
 
     const fetchCities = async (perPage, page) => {
-        const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                page: page - 1,
-                size: perPage,
-                name: nameFilter
-            })
-        };
 
-        const response = await fetch("http://localhost:8080/api/city/search", requestOptions);
+        const response = await fetch(`http://localhost:8080/api/v1/city/?page=${page - 1}&size=${perPage}&name=${nameFilter}`);
         return await response.json();
     }
 
@@ -93,7 +84,7 @@ function App() {
             })
         };
 
-        const response = await fetch(`http://localhost:8080/api/city/${cityId}`, requestOptions);
+        const response = await fetch(`http://localhost:8080/api/v1/city/${cityId}`, requestOptions);
 
         if (!response.ok) {
             const data = await response.json();
