@@ -112,7 +112,6 @@ public class CityServiceTest {
         assertEquals(city2.name(), repositoryCity2.getName(), "Name should be equals");
         assertEquals(city2.pictureUrl(), repositoryCity2.getPictureUrl(), "Picture URL should be equals");
     }
-
     private List<City> getCitiesFromRepositoryList() {
         City city1 = new City();
         city1.setId(CITY_ID_1);
